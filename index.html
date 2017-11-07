@@ -12,6 +12,10 @@
         html{
             overflow-x: hidden;
         }
+        #video{
+            width: 320px;
+            height: 240px;
+        }
     </style>
 </head>
 <body>
@@ -23,10 +27,11 @@
 <p>
     <div id="result"></div>
 </p>
-<canvas id="qr-canvas" width="800" height="600"></canvas>
+
 <div id="videobox">
-    <video id="video" autoplay playsinline width="100%"></video>
+    <video id="video" autoplay playsinline ></video>
 </div>
+<canvas id="qr-canvas" width="800" height="600"></canvas>
 <script>
 
     const medias = {audio : false, video : {
@@ -61,12 +66,10 @@
         qrcode.decode();
         setTimeout(captureToCanvas,500);
     }
-
-
-    //requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
     function successCallback(stream) {
         video.srcObject = stream;
-        captureToCanvas();
+        //captureToCanvas();
     }
     function errorCallback(err) {
         alert("Error: " + err);
@@ -75,7 +78,16 @@
         //canvas.width  = window.innerWidth;
         //canvas.height = window.innerHeight;
         //ctx.drawImage(video, 0, 0);
-        //requestAnimationFrame(draw);
+        ctx.drawImage(video, 0, 0,800,600);
+        try{
+            setTimeout(function () {
+                requestAnimationFrame(draw);
+                qrcode.decode();
+            },500)
+
+        }catch (e){
+            console.log(JSON.stringify(e));
+        }
     }
     function scan() {
         navigator.getUserMedia(medias, successCallback, errorCallback);
