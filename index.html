@@ -77,13 +77,14 @@
                 html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
             html+="<b>"+htmlEntities(a)+"</b><br><br>";
             document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+            window.location.href = a.toString();
         }
     }
     
     function displayScan(a) {
-        var html="<br>";
-        html+="<b>"+a+"</b><br><br>";
-        document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+//        var html="<br>";
+//        html+="<b>"+a+"</b><br><br>";
+//        document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
     }
     //set qrcode result to read fn
     qrcode.callback = read;
