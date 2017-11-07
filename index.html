@@ -47,9 +47,11 @@
                 alert("Your browser doesn't have support for the navigator.getUserMedia interface.");
             }
             else{
+
                 navigator.getMedia(
                     {
-                        video: true
+                        //video: true
+                        audio: true, video: { facingMode: { exact: "environment" } }
                     },
                     // Success Callback
                     function(stream){
