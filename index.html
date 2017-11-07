@@ -7,7 +7,7 @@
     <script src="llqrcode.js"></script>
 </head>
 <body>
-    <video id="video" width="100%" height="auto" autoplay></video>
+    <video id="video" width="100%" height="auto" autoplay muted></video>
     <canvas id="qr-canvas" width="800" height="600" style="display: none"></canvas>
     <p id="result" >
     </p>
@@ -26,6 +26,12 @@
                 html+="<b>"+htmlEntities(a)+"</b><br><br>";
                 document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
             }
+            else{
+                var html="<br>";
+                html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
+                html+="<b>"+htmlEntities(a)+"</b><br><br>";
+                document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+            }
 
         }
         //set qrcode result to read fn
@@ -33,7 +39,7 @@
         function captureToCanvas() {
             context.drawImage(video, 0, 0, 800, 600);
             qrcode.decode();
-            setTimeout(captureToCanvas,2000);
+            setTimeout(captureToCanvas,1000);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
