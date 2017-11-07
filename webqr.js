@@ -168,7 +168,7 @@ function setwebcam()
 			.then(function(devices) {
 			  devices.forEach(function(device) {
 				if (device.kind === 'videoinput') {
-				  if(device.label.toLowerCase().search("back") >-1)
+				  if(device.label.toLowerCase().search("back") >-1 )
 					options={'deviceId': {'exact':device.deviceId}, 'facingMode':'environment'} ;
 				}
 				console.log(device.kind + ": " + device.label +" id = " + device.deviceId);
@@ -190,6 +190,7 @@ function setwebcam()
 
 function setwebcam2(options)
 {
+    options = { facingMode: { exact: "environment" } };
 	console.log(options);
 	document.getElementById("result").innerHTML="- scanning -";
     if(stype==1)
