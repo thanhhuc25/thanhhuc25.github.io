@@ -1,0 +1,28 @@
+
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tripsan</title>
+
+
+
+    <script type="text/javascript" src="llqrcode.js"></script>
+
+</head>
+
+<body>
+<input type="file" accept="video/*;capture=camcorder">
+<input type="file" accept="audio/*;capture=microphone">
+
+<device type="media" onchange="update(this.data)"></device>
+<video autoplay></video>
+<script>
+    function update(stream) {
+        document.querySelector('video').src = stream.url;
+    }
+</script>
+
+</body>
+
+</html>
