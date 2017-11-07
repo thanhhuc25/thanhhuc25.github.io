@@ -38,7 +38,13 @@
 <body>
 <div style="text-align: center">
     <div style="display: inline-block">
+        <span id="lang"></span>
+        <br/>
+        <div id="location"></div>
+        <br/>
         <button onclick="scan()">Scan QR  code</button>
+
+
     </div>
 </div>
 
@@ -51,7 +57,25 @@
 <div id="result"></div>
 </p>
 <script>
-
+    try{
+        var lang = window.navigator.userLanguage || window.navigator.language;
+        document.getElementById('lang').innerHTML = "Detected language: "+lang;
+        var x = document.getElementById("location");
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+        }
+        getLocation();
+    }catch (ex2){
+        
+    }
     const medias = {audio : false, video : {
             facingMode : {
                 exact : "environment" // rear camera
@@ -79,7 +103,7 @@
                 html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
             html+="<b>"+htmlEntities(a)+"</b><br><br>";
             document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
-            
+
         }
     }
     
