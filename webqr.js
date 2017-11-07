@@ -111,7 +111,7 @@ function read(a)
 
 
     if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0){
-        window.location.href = a;
+        window.location.href = a.toString();
     }
 }	
 
