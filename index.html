@@ -34,10 +34,10 @@
         alert("Error: " + err);
     }
     function draw() {
-//        canvas.width  = window.innerWidth;
-//        canvas.height = window.innerHeight;
-        canvas.width  = '100%';
-        canvas.height = '100%';
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+//        canvas.width  = '100%';
+//        canvas.height = '100%';
         ctx.drawImage(video, 0, 0);
         requestAnimationFrame(draw);
     }
