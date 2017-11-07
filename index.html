@@ -4,8 +4,24 @@
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tripsan</title>
-    <script type="text/javascript" src="llqrcode.js"></script>
-    <script src="qcode-decoder.min.js"></script>
+    <script type="text/javascript" src="grid.js"></script>
+    <script type="text/javascript" src="version.js"></script>
+    <script type="text/javascript" src="detector.js"></script>
+    <script type="text/javascript" src="formatinf.js"></script>
+    <script type="text/javascript" src="errorlevel.js"></script>
+    <script type="text/javascript" src="bitmat.js"></script>
+    <script type="text/javascript" src="datablock.js"></script>
+    <script type="text/javascript" src="bmparser.js"></script>
+    <script type="text/javascript" src="datamask.js"></script>
+    <script type="text/javascript" src="rsdecoder.js"></script>
+    <script type="text/javascript" src="gf256poly.js"></script>
+    <script type="text/javascript" src="gf256.js"></script>
+    <script type="text/javascript" src="decoder.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
+    <script type="text/javascript" src="findpat.js"></script>
+    <script type="text/javascript" src="alignpat.js"></script>
+    <script type="text/javascript" src="databr.js"></script>
+
     <style>
         #qr-canvas{
             display: none;
@@ -36,19 +52,19 @@
 </p>
 <script>
 
-    const medias = {audio : false, video : {
-            facingMode : {
-                exact : "environment" // rear camera
-            }
-        }},
-        video  = document.getElementById("video"),
-        canvas = document.getElementById("qr-canvas"),
-        ctx    = canvas.getContext("2d");
-
-//    const medias = {audio : false, video : true},
+//    const medias = {audio : false, video : {
+//            facingMode : {
+//                exact : "environment" // rear camera
+//            }
+//        }},
 //        video  = document.getElementById("video"),
 //        canvas = document.getElementById("qr-canvas"),
 //        ctx    = canvas.getContext("2d");
+
+    const medias = {audio : false, video : true},
+        video  = document.getElementById("video"),
+        canvas = document.getElementById("qr-canvas"),
+        ctx    = canvas.getContext("2d");
 
 
     function read(a)
@@ -70,15 +86,11 @@
         document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
     }
     //set qrcode result to read fn
-    //qrcode.callback = read;
+    qrcode.callback = read;
 
     requestAnimationFrame(draw);
     function successCallback(stream) {
         video.srcObject = stream;
-        QCodeDecoder()
-            .decodeFromVideo(video, function(er,res){
-                console.log(res);
-            });
     }
     function errorCallback(err) {
         alert("Error: " + err);
@@ -87,11 +99,11 @@
         //canvas.width  = window.innerWidth;
         //canvas.height = window.innerHeight;
         //ctx.drawImage(video, 0, 0);
-        ctx.drawImage(video, 0, 0,800,600);
+        ctx.drawImage(video, 0, 0,320,240);
         try{
             setTimeout(function () {
                 try{
-                    //qrcode.decode();
+                    qrcode.decode();
                 }catch (ex){
                     displayScan(ex.toString());
                 }
