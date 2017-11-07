@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+        }
+
+        #video {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<video id="video" autoplay playsinline></video>
+<script>
+    const medias = {audio : false, video : true},
+        video  = document.getElementById("video");
+
+    navigator.getUserMedia(medias, successCallback, errorCallback);
+
+    function successCallback(stream) {
+        video.srcObject = stream;
+    };
+
+    function errorCallback(err) {
+        alert(err);
+    };
+</script>
+</body>
+</html>
