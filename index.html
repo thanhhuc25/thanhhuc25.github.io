@@ -7,7 +7,7 @@
     <script type="text/javascript" src="llqrcode.js"></script>
     <style>
         #qr-canvas{
-            /*display: none;*/
+            display: none;
         }
         html{
             overflow-x: hidden;
@@ -47,11 +47,13 @@
 //        video  = document.getElementById("video"),
 //        canvas = document.getElementById("qr-canvas"),
 //        ctx    = canvas.getContext("2d");
+//
+
     function read(a)
     {
         if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
         {
-            console.log('detect: ' + a);
+            alert(a);
             var html="<br>";
             if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
                 html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
@@ -59,17 +61,18 @@
             document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
         }
     }
+    
+    function displayScan(a) {
+        var html="<br>";
+        html+="<b>"+a+"</b><br><br>";
+        document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+    }
     //set qrcode result to read fn
     qrcode.callback = read;
-    function captureToCanvas() {
-        ctx.drawImage(video, 0, 0, 800, 600);
-        qrcode.decode();
-        setTimeout(captureToCanvas,500);
-    }
+
     requestAnimationFrame(draw);
     function successCallback(stream) {
         video.srcObject = stream;
-        //captureToCanvas();
     }
     function errorCallback(err) {
         alert("Error: " + err);
@@ -81,10 +84,14 @@
         ctx.drawImage(video, 0, 0,800,600);
         try{
             setTimeout(function () {
-                requestAnimationFrame(draw);
-                qrcode.decode();
-            },500)
+                try{
+                    qrcode.decode();
+                }catch (ex){
+                    displayScan(ex.toString());
+                }
 
+                requestAnimationFrame(draw);
+            },500)
         }catch (e){
             console.log(JSON.stringify(e));
         }
