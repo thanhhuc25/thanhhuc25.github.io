@@ -9,6 +9,9 @@
         #qr-canvas{
             display: none;
         }
+        html{
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>
@@ -17,11 +20,15 @@
         <button onclick="scan()">Scan QR  code</button>
     </div>
 </div>
+<p>
+    <div id="result"></div>
+</p>
 <canvas id="qr-canvas" width="800" height="600"></canvas>
 <div id="videobox">
     <video id="video" autoplay playsinline width="100%"></video>
 </div>
 <script>
+
     const medias = {audio : false, video : {
             facingMode : {
                 exact : "environment" // rear camera
@@ -35,10 +42,31 @@
 //        video  = document.getElementById("video"),
 //        canvas = document.getElementById("qr-canvas"),
 //        ctx    = canvas.getContext("2d");
+    function read(a)
+    {
+        if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+        {
+            console.log('detect: ' + a);
+            var html="<br>";
+            if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+                html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
+            html+="<b>"+htmlEntities(a)+"</b><br><br>";
+            document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+        }
+    }
+    //set qrcode result to read fn
+    qrcode.callback = read;
+    function captureToCanvas() {
+        ctx.drawImage(video, 0, 0, 800, 600);
+        qrcode.decode();
+        setTimeout(captureToCanvas,500);
+    }
 
-    requestAnimationFrame(draw);
+
+    //requestAnimationFrame(draw);
     function successCallback(stream) {
         video.srcObject = stream;
+        captureToCanvas();
     }
     function errorCallback(err) {
         alert("Error: " + err);
@@ -46,8 +74,8 @@
     function draw() {
         //canvas.width  = window.innerWidth;
         //canvas.height = window.innerHeight;
-        ctx.drawImage(video, 0, 0);
-        requestAnimationFrame(draw);
+        //ctx.drawImage(video, 0, 0);
+        //requestAnimationFrame(draw);
     }
     function scan() {
         navigator.getUserMedia(medias, successCallback, errorCallback);
