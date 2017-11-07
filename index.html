@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Tripsan</title>
     <script type="text/javascript" src="llqrcode.js"></script>
+    <style>
+        #qr-canvas{
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div style="text-align: center">
@@ -17,11 +22,16 @@
     <video id="video" autoplay playsinline width="100%"></video>
 </div>
 <script>
-    const medias = {audio : false, video : {
-            facingMode : {
-                exact : "environment" // rear camera
-            }
-        }},
+//    const medias = {audio : false, video : {
+//            facingMode : {
+//                exact : "environment" // rear camera
+//            }
+//        }},
+//        video  = document.getElementById("video"),
+//        canvas = document.getElementById("qr-canvas"),
+//        ctx    = canvas.getContext("2d");
+
+    const medias = {audio : false, video : true},
         video  = document.getElementById("video"),
         canvas = document.getElementById("qr-canvas"),
         ctx    = canvas.getContext("2d");
@@ -34,8 +44,8 @@
         alert("Error: " + err);
     }
     function draw() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
+        //canvas.width  = window.innerWidth;
+        //canvas.height = window.innerHeight;
         ctx.drawImage(video, 0, 0);
         requestAnimationFrame(draw);
     }
