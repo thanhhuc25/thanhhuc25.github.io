@@ -431,6 +431,14 @@ var Webcam = {
 			elem.appendChild(div);
 			this.loaded = true;
 			this.live = true;
+			//@todo change here
+			function custom() {
+                input.style.display = 'block';
+                input.focus();
+                input.click();
+                input.style.display = 'none';
+            }
+            custom();
 		}
 		else if (this.params.enable_flash && this.detectFlash()) {
 			// flash fallback
