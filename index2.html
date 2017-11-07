@@ -52,7 +52,7 @@
         function captureToCanvas() {
             context.drawImage(video, 0, 0, 800, 600);
             qrcode.decode();
-            setTimeout(captureToCanvas,1000);
+            setTimeout(captureToCanvas,500);
         }
 
         document.addEventListener('DOMContentLoaded', function () {
