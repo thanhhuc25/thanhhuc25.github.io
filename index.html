@@ -14,7 +14,7 @@
 </div>
 <canvas id="qr-canvas" width="800" height="600"></canvas>
 <div id="videobox">
-    <video id="video" autoplay playsinline></video>
+    <video id="video" autoplay playsinline width="100%"></video>
 </div>
 <script>
     const medias = {audio : false, video : {
@@ -36,8 +36,6 @@
     function draw() {
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
-//        canvas.width  = '100%';
-//        canvas.height = '100%';
         ctx.drawImage(video, 0, 0);
         requestAnimationFrame(draw);
     }
