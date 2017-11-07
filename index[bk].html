@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Trip scan</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="llqrcode.js"></script>
+    <style>
+        #video{
+            width: 320px;
+            height: 240px;
+        }
+        html{
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+   <div style="text-align: center">
+       <div style="display: inline-block">
+           <video id="video" width="100%" height="auto" autoplay muted></video>
+       </div>
+   </div>
+    <canvas id="qr-canvas" width="800" height="600" style="display: none"></canvas>
+    <p id="result" >
+    </p>
+    <script>
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('qr-canvas');
+        var context = canvas.getContext('2d');
+        function read(a)
+        {
+            if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+            {
+                console.log('detect: ' + a);
+                var html="<br>";
+                if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+                    html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
+                html+="<b>"+htmlEntities(a)+"</b><br><br>";
+                document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+            }
+            else{
+                var html="<br>";
+                html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
+                html+="<b>"+htmlEntities(a)+"</b><br><br>";
+                document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+            }
+
+        }
+        //set qrcode result to read fn
+        qrcode.callback = read;
+        function captureToCanvas() {
+            context.drawImage(video, 0, 0, 800, 600);
+            qrcode.decode();
+            setTimeout(captureToCanvas,1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            navigator.getMedia = ( navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia);
+            video.play();
+            if (!navigator.getMedia) {
+                alert("Your browser doesn't have support for the navigator.getUserMedia interface.");
+            }
+            else{
+
+                navigator.getMedia(
+                    {
+                        //video: true
+                        audio: false, video: { facingMode: { exact: "environment" } }
+                    },
+                    // Success Callback
+                    function(stream){
+                        // Create an object URL for the video stream and
+                        // set it as src of our HTLM video element.
+                        video.src = window.URL.createObjectURL(stream);
+                        // Play the video element to start the stream.
+                        video.play();
+                        video.onplay = function() {
+                        };
+                        captureToCanvas();
+                    },
+                    // Error Callback
+                    function (err) {
+                        alert("There was an error with accessing the camera stream: " + err.name);
+                    }
+                );
+
+            }
+        });
+        
+        
+    </script>
+</body>
+</html>
