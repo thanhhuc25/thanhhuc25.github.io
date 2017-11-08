@@ -69,21 +69,8 @@
     try{
         var lang = window.navigator.userLanguage || window.navigator.language;
         document.getElementById('lang').innerHTML = "Detected language: "+"<b>"+lang+"</b>";
-//        var x = document.getElementById("location");
-//        function getLocation() {
-//            if (navigator.geolocation) {
-//                navigator.geolocation.getCurrentPosition(showPosition);
-//            } else {
-//                x.innerHTML = "Geolocation is not supported by this browser.";
-//            }
-//        }
-//        function showPosition(position) {
-//            x.innerHTML = "Latitude: " + position.coords.latitude +
-//                "<br>Longitude: " + position.coords.longitude;
-//        }
-//        getLocation();
     }catch (ex2){
-
+        document.getElementById('lang').innerHTML = JSON.stringify(ex2);
     }
     const medias = {audio : false, video : {
             facingMode : {
@@ -173,7 +160,7 @@
                 };
 
                 infoWindow.setPosition(pos);
-                infoWindow.setContent('Location found.');
+                infoWindow.setContent('Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng);
                 infoWindow.open(map);
                 map.setCenter(pos);
             }, function() {
