@@ -172,7 +172,7 @@
 
                 //infoWindow.setContent('Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng);
                 if(position.coords.accuracy){
-                    content+='Accuracy: '+position.coords.accuracy+' meters';
+                    content+='Accuracy: '+ parseInt(position.coords.accuracy.toString()) +' meters';
                 }
                 else{
                     content+='Accuracy: Undefined';
