@@ -78,6 +78,11 @@
     }catch (ex2){
         document.getElementById('lang').innerHTML = JSON.stringify(ex2);
     }
+    try{
+        alert(window.navigator.language);
+    }catch (ex3){
+
+    }
     const medias = {audio : false, video : {
             facingMode : {
                 exact : "environment" // rear camera
