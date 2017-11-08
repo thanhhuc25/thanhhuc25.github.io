@@ -51,7 +51,7 @@
     <div style="display: inline-block">
         <span id="lang"></span>
         <br/>
-        <button onclick="scan()">Scan QR  code</button>
+        <button onclick="scan">Scan QR  code</button>
     </div>
 </div>
 
@@ -78,11 +78,7 @@
     }catch (ex2){
         document.getElementById('lang').innerHTML = JSON.stringify(ex2);
     }
-    try{
-        alert(window.navigator.language);
-    }catch (ex3){
-
-    }
+    
     const medias = {audio : false, video : {
             facingMode : {
                 exact : "environment" // rear camera
