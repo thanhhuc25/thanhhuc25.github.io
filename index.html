@@ -168,12 +168,27 @@
                 };
 
                 infoWindow.setPosition(pos);
-                infoWindow.setContent('Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng);
+                var content = 'Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng+'<br/>';
+
+                //infoWindow.setContent('Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng);
+                if(position.coords.accuracy){
+                    content+='Accuracy: '+position.coords.accuracy+' meters';
+                }
+                else{
+                    content+='Accuracy: Undefined';
+                }
+                infoWindow.setContent(content);
                 infoWindow.open(map);
                 map.setCenter(pos);
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
-            });
+            },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
         } else {
             // Browser doesn't support Geolocation
             handleLocationError(false, infoWindow, map.getCenter());
