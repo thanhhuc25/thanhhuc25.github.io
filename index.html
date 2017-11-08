@@ -68,7 +68,7 @@
 <script>
     try{
 
-        var lang = window.navigator.language || window.navigator.userLanguage;
+        var lang = window.navigator.language;
         document.getElementById('lang').innerHTML = "Detected language: "+"<b>"+lang+"</b>";
     }catch (ex2){
         document.getElementById('lang').innerHTML = JSON.stringify(ex2);
