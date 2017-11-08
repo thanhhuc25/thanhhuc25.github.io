@@ -51,7 +51,7 @@
     <div style="display: inline-block">
         <span id="lang"></span>
         <br/>
-        <button onclick="scan">Scan QR  code</button>
+        <button onclick="scan()">Scan QR  code</button>
     </div>
 </div>
 
@@ -68,17 +68,11 @@
 <script>
     try{
         var lang = window.navigator.language || window.navigator.userLanguage;
-        if(window.navigator.language){
-            alert(window.navigator.language);
-        }
-        else{
-            alert("cannot detect language");
-        }
         document.getElementById('lang').innerHTML = "Detected language: "+"<b>"+lang+"</b>";
     }catch (ex2){
         document.getElementById('lang').innerHTML = JSON.stringify(ex2);
     }
-    
+
     const medias = {audio : false, video : {
             facingMode : {
                 exact : "environment" // rear camera
@@ -144,7 +138,12 @@
         }
     }
     function scan() {
-        navigator.getUserMedia(medias, successCallback, errorCallback);
+        try{
+            navigator.getUserMedia(medias, successCallback, errorCallback);
+        }catch (exeption){
+
+        }
+
     }
 </script>
 <!--google map-->
