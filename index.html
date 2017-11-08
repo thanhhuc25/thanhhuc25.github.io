@@ -47,14 +47,11 @@
     </style>
 </head>
 <body>
-<script>
-    alert(window.navigator.language);
-</script>
 <div style="text-align: center">
     <div style="display: inline-block">
         <span id="lang"></span>
         <br/>
-        <button onclick="scan()">Scan QR  code</button>
+        <button id="btnScan">Scan QR  code</button>
     </div>
 </div>
 
@@ -149,6 +146,7 @@
         }
 
     }
+    document.getElementById('btnScan').onclick = scan;
 </script>
 <!--google map-->
 <script>
