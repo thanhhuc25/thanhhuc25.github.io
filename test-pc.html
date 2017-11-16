@@ -1,0 +1,210 @@
+
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tripsan</title>
+    <script type="text/javascript" src="grid.js"></script>
+    <script type="text/javascript" src="version.js"></script>
+    <script type="text/javascript" src="detector.js"></script>
+    <script type="text/javascript" src="formatinf.js"></script>
+    <script type="text/javascript" src="errorlevel.js"></script>
+    <script type="text/javascript" src="bitmat.js"></script>
+    <script type="text/javascript" src="datablock.js"></script>
+    <script type="text/javascript" src="bmparser.js"></script>
+    <script type="text/javascript" src="datamask.js"></script>
+    <script type="text/javascript" src="rsdecoder.js"></script>
+    <script type="text/javascript" src="gf256poly.js"></script>
+    <script type="text/javascript" src="gf256.js"></script>
+    <script type="text/javascript" src="decoder.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
+    <script type="text/javascript" src="findpat.js"></script>
+    <script type="text/javascript" src="alignpat.js"></script>
+    <script type="text/javascript" src="databr.js"></script>
+
+    <style>
+        #qr-canvas{
+            display: none;
+        }
+        html{
+            overflow-x: hidden;
+        }
+        #video{
+            width: 320px;
+            height: 240px;
+        }
+        #map {
+            height: 100%;
+            max-height: 400px;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align: center">
+    <div style="display: inline-block">
+        <span id="lang"></span>
+        <script>
+            try{
+                var lang = window.navigator.language;
+                document.getElementById('lang').innerHTML = "Detected language: "+"<b>"+lang+"</b>";
+            }catch (ex2){
+                document.getElementById('lang').innerHTML = JSON.stringify(ex2);
+            }
+        </script>
+        <br/>
+        <button id="btnScan">Scan QR  code</button>
+    </div>
+</div>
+
+
+<div id="videobox">
+    <video id="video" autoplay playsinline ></video>
+</div>
+<canvas id="qr-canvas" width="800" height="600"></canvas>
+<p>
+<div id="result"></div>
+</p>
+<div id="map" >
+</div>
+<script>
+    // const medias = {audio : false, video : {
+    //         facingMode : {
+    //             exact : "environment" // rear camera
+    //         }
+    //     }},
+    //     video  = document.getElementById("video"),
+    //     canvas = document.getElementById("qr-canvas"),
+    //     ctx    = canvas.getContext("2d");
+
+   const medias = {audio : false, video : true},
+       video  = document.getElementById("video"),
+       canvas = document.getElementById("qr-canvas"),
+       ctx    = canvas.getContext("2d");
+
+
+    function read(a)
+    {
+        if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+        {
+            alert(a);
+
+            window.location.href = a.toString();
+            var html="<br>";
+            if(a.indexOf("http://") === 0 || a.indexOf("https://") === 0)
+                html+="<a target='_blank' href='"+a+"'>"+a+"</a><br>";
+            html+="<b>"+htmlEntities(a)+"</b><br><br>";
+            document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+
+        }
+    }
+    
+    function displayScan(a) {
+//        var html="<br>";
+//        html+="<b>"+a+"</b><br><br>";
+//        document.getElementById("result").innerHTML=document.getElementById("result").innerHTML+html;
+    }
+    //set qrcode result to read fn
+    qrcode.callback = read;
+
+    requestAnimationFrame(draw);
+    function successCallback(stream) {
+        video.srcObject = stream;
+    }
+    function errorCallback(err) {
+        alert("Error: " + err);
+    }
+    function draw() {
+        //canvas.width  = window.innerWidth;
+        //canvas.height = window.innerHeight;
+        //ctx.drawImage(video, 0, 0);
+        ctx.drawImage(video, 0, 0);
+        try{
+            setTimeout(function () {
+                try{
+                    qrcode.decode();
+                }catch (ex){
+                    displayScan(ex.toString());
+                }
+                requestAnimationFrame(draw);
+            },500)
+        }catch (e){
+            console.log(JSON.stringify(e));
+        }
+    }
+    function scan() {
+        try{
+            navigator.getUserMedia(medias, successCallback, errorCallback);
+        }catch (exeption){
+
+        }
+
+    }
+    document.getElementById('btnScan').onclick = scan;
+</script>
+<!--google map-->
+<script>
+
+    var map, infoWindow;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 6 * 2
+        });
+        infoWindow = new google.maps.InfoWindow;
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                var content = 'Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng+'<br/>';
+
+                //infoWindow.setContent('Latitude: ' + pos.lat + '<br/>Longtitude: ' + pos.lng);
+                if(position.coords.accuracy){
+                    content+='Accuracy: '+ parseInt(position.coords.accuracy.toString()) +' meters';
+                }
+                else{
+                    content+='Accuracy: Undefined';
+                }
+                infoWindow.setContent(content);
+                infoWindow.open(map);
+                map.setCenter(pos);
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQf3ZTIsb39kJ_nTNk_xl_UFfyvKcme28&callback=initMap">
+</script>
+</body>
+</html>
