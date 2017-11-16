@@ -129,12 +129,11 @@
              * @param result
              */
             function readQRCode(result) {
-                console.log(result);
                 if(result.indexOf("http://") === 0 || result.indexOf("https://") === 0)
                     {
                         if(!isFound)
                         {
-                            alert(a);
+                            alert(result);
                             window.location.href = result.toString();
                         }
 
