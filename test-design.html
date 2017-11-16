@@ -115,10 +115,7 @@
                 video  = document.getElementById("video"),
                 canvas = document.getElementById("qr-canvas"),
                 ctx    = canvas.getContext("2d");
-            var isMobile = md.mobile();
-            if(!isMobile){ //@todo change here
-                medias = { audio : false, video : true}; // front camera
-            }
+            
             /**
              * isFound : has found qr code result
              * @type {boolean}
@@ -135,26 +132,32 @@
                         {
                             alert(result);
                             window.location.href = result.toString();
+                            isFound = true;
                         }
-
                     }
             }
             // set qr code result to readQRCode fn
             qrcode.callback = readQRCode;
             //draw canvas
             requestAnimationFrame(draw);
+            // set video stream
             function successCallback(stream) {
                 video.srcObject = stream;
             }
+            // error on video stream
             function errorCallback(err) {
-                console.log(err);
                 $("#message").text(err.name).show();
             }
+
+            /**
+             * draw video to canvas
+             */
             function draw() {
                 ctx.drawImage(video, 0, 0);
                 try{
                     setTimeout(function () {
                         try{
+                            //try to decode from image
                             qrcode.decode();
                         }catch (ex){
                             console.log(ex);
@@ -164,6 +167,10 @@
                 }catch (e){
                 }
             }
+
+            /**
+             * get video from camera
+             */
             function scan() {
                 try{
                     navigator.getUserMedia(medias, successCallback, errorCallback);
